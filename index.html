@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP Pre-Discovery Deep-Dive | Emirates Rawabi Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <img src="assets/logo.png" alt="NXSYS" class="preloader-logo-img">
+            <div class="preloader-bar"><div class="preloader-progress"></div></div>
+            <div class="preloader-text">Loading Presentation...</div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Slide Counter -->
+    <div class="slide-counter" id="slideCounter">
+        <span class="current">01</span>
+        <span class="divider">/</span>
+        <span class="total">40</span>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <div class="nav-arrows">
+        <button class="nav-arrow prev" id="prevSlide" aria-label="Previous slide">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+        <button class="nav-arrow next" id="nextSlide" aria-label="Next slide">
+            <i class="fas fa-chevron-down"></i>
+        </button>
+    </div>
+
+    <!-- Slide Indicators -->
+    <div class="slide-indicators" id="slideIndicators"></div>
+
+    <!-- Slide Titles Navigation (Left Panel) -->
+    <div class="slide-titles-nav" id="slideTitlesNav">
+        <div class="nav-section">Overview</div>
+        <div class="nav-item" data-nav="0">Title</div>
+        <div class="nav-item" data-nav="1">Executive Summary</div>
+
+        <div class="nav-section">Al Rawabi Dairy (16)</div>
+        <div class="nav-item" data-nav="2">Demand Planning</div>
+        <div class="nav-item" data-nav="3">Recipe Management</div>
+        <div class="nav-item" data-nav="4">MRP & Milk Balancing</div>
+        <div class="nav-item" data-nav="5">Scheduling & Capacity</div>
+        <div class="nav-item" data-nav="6">Module Architecture</div>
+        <div class="nav-item" data-nav="7">Milk Reception</div>
+        <div class="nav-item" data-nav="8">Quality Management</div>
+        <div class="nav-item" data-nav="9">Traceability</div>
+        <div class="nav-item" data-nav="10">Cost & Inventory</div>
+        <div class="nav-item" data-nav="11">Van Sales Operations</div>
+        <div class="nav-item" data-nav="12">E-Commerce & Channels</div>
+        <div class="nav-item" data-nav="13">Revenue & Profitability</div>
+        <div class="nav-item" data-nav="14">Group & Consolidation</div>
+        <div class="nav-item" data-nav="15">Intercompany & Tax</div>
+        <div class="nav-item" data-nav="16">Procurement & MRP</div>
+        <div class="nav-item" data-nav="17">Inventory & Warehouse</div>
+
+        <div class="nav-section">Emirates National Foods (8)</div>
+        <div class="nav-item" data-nav="18">Van Sales & Channels</div>
+        <div class="nav-item" data-nav="19">B2B & Export</div>
+        <div class="nav-item" data-nav="20">Hatchery Operations</div>
+        <div class="nav-item" data-nav="21">Farm Operations</div>
+        <div class="nav-item" data-nav="22">Processing Plant</div>
+        <div class="nav-item" data-nav="23">Quality Management</div>
+        <div class="nav-item" data-nav="24">Feed & Procurement</div>
+        <div class="nav-item" data-nav="25">Finance & Controlling</div>
+
+        <div class="nav-section">Greenfields for Feeds (5)</div>
+        <div class="nav-item" data-nav="26">IC & External Sales</div>
+        <div class="nav-item" data-nav="27">Procurement & Planning</div>
+        <div class="nav-item" data-nav="28">Feed Manufacturing</div>
+        <div class="nav-item" data-nav="29">Quality Management</div>
+        <div class="nav-item" data-nav="30">Finance & Controlling</div>
+
+        <div class="nav-section">Salwa @ Liwa (5)</div>
+        <div class="nav-item" data-nav="31">Breeder Operations</div>
+        <div class="nav-item" data-nav="32">Quality Management</div>
+        <div class="nav-item" data-nav="33">Feed & Farm Inputs</div>
+        <div class="nav-item" data-nav="34">IC Sales & Distribution</div>
+        <div class="nav-item" data-nav="35">Finance & Controlling</div>
+
+        <div class="nav-section">Summary</div>
+        <div class="nav-item" data-nav="36">Key Statistics</div>
+        <div class="nav-item" data-nav="37">Recommendations</div>
+        <div class="nav-item" data-nav="38">Next Steps</div>
+
+        <div class="nav-section">Reference</div>
+        <div class="nav-item" data-nav="39">Appendix: All Findings</div>
+    </div>
+
+    <!-- Presenter Notes Panel -->
+    <div class="presenter-notes-panel">
+        <div class="notes-header">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Presenter Notes</span>
+        </div>
+        <div class="notes-body" id="presenterNotesBody">
+            <p class="no-notes">No presenter notes for this slide.</p>
+        </div>
+    </div>
+
+    <!-- Presenter Mode Indicator -->
+    <div class="presenter-mode-indicator">
+        PRESENTER MODE ACTIVE - Press P to exit | A: Audience Window | F: Fullscreen
+    </div>
+
+    <!-- Finding Detail Panel -->
+    <div class="finding-detail-panel" id="findingDetailPanel">
+        <div class="detail-panel-header">
+            <div class="panel-title">
+                <i class="fas fa-lightbulb"></i>
+                <span>Deep Dive Analysis</span>
+            </div>
+            <button class="panel-close" id="closeFindingPanel">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="detail-panel-body" id="findingDetailBody">
+            <!-- Content populated by JavaScript -->
+        </div>
+    </div>
+    <div class="panel-overlay" id="panelOverlay"></div>
+
+    <!-- Main Presentation -->
+    <div class="presentation" id="presentation">
+
+        <!-- SLIDE 0: Title Slide -->
+        <section class="slide slide-title active" data-slide="0">
+            <div class="slide-bg">
+                <div class="bg-gradient"></div>
+                <div class="bg-pattern"></div>
+                <div class="diagonal-cut"></div>
+            </div>
+            <div class="slide-content centered">
+                <div class="title-badge animate-item" data-delay="0">
+                    <i class="fas fa-search-plus"></i>
+                    <span>SAP PRE-DISCOVERY DEEP-DIVE</span>
+                </div>
+                <div class="mega-title animate-item" data-delay="200">
+                    <span class="line-1">Emirates Rawabi Group</span>
+                    <span class="line-2">SAP Pre-Discovery Assessment Report</span>
+                </div>
+                <div class="title-sub animate-item" data-delay="400">
+                    <span class="highlight">378</span> Observations <span class="separator">|</span>
+                    <span class="highlight">34</span> Consolidated Findings <span class="separator">|</span>
+                    <span class="highlight">4</span> Entities
+                </div>
+                <div class="title-footer animate-item" data-delay="600">
+                    <div class="title-logo-box">
+                        <img src="assets/logo.png" alt="NXSYS" class="title-logo">
+                    </div>
+                    <span class="title-date">Pre-Discovery Deep-Dive | February 2026</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 1: Executive Summary -->
+        <section class="slide slide-stats" data-slide="1">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="section-label animate-item" data-delay="0">Executive Summary</div>
+                <h1 class="slide-title animate-item" data-delay="100">Assessment Overview</h1>
+                <div class="stats-grid four-col">
+                    <div class="stat-card animate-item" data-delay="200">
+                        <div class="stat-icon"><i class="fas fa-exclamation-circle"></i></div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Critical Gaps</div>
+                        <div class="stat-detail">23.5% - Architectural misalignment</div>
+                    </div>
+                    <div class="stat-card animate-item" data-delay="250">
+                        <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Significant Gaps</div>
+                        <div class="stat-detail">52.9% - Key features missing</div>
+                    </div>
+                    <div class="stat-card animate-item" data-delay="300">
+                        <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="stat-value">50%</div>
+                        <div class="stat-label">Low Adoption</div>
+                        <div class="stat-detail">17 of 34 areas &lt;10% utilization</div>
+                    </div>
+                    <div class="stat-card animate-item" data-delay="350">
+                        <div class="stat-icon"><i class="fas fa-file-excel"></i></div>
+                        <div class="stat-value">Excel</div>
+                        <div class="stat-label">Shadow Systems</div>
+                        <div class="stat-detail">Critical operations outside SAP</div>
+                    </div>
+                </div>
+                <div class="legend-bar animate-item" data-delay="400">
+                    <div class="legend-title">Rating Scale:</div>
+                    <div class="legend-item"><span class="dot red"></span> Critical Gap / Not Adopted</div>
+                    <div class="legend-item"><span class="dot orange"></span> Significant Gap / Limited Use</div>
+                    <div class="legend-item"><span class="dot yellow"></span> Partial Implementation / Partial Use</div>
+                    <div class="legend-item"><span class="dot green"></span> Functional / Moderate Use</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== AL RAWABI DAIRY COMPANY ==================== -->
+
+        <!-- SLIDE 2: ARDC - Demand Planning -->
+        <section class="slide slide-finding" data-slide="2">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Production Planning — Demand Planning</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Production is planned on <strong>raw milk volume (liters)</strong> instead of milk components (fat, protein, lactose) — a critical architectural gap in dairy manufacturing. All demand forecasting, milk balancing, and fat allocation are performed entirely in <strong>Excel by individuals</strong> using tribal knowledge; SAP is not utilized for the most critical planning decisions. No statistical forecasting tools, no MAPE/bias tracking, and seasonal patterns (Ramadan +60%) rely on personal experience rather than system intelligence.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design red">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Critical Gap</div>
+                        <div class="rating-desc">Architectural misalignment identified</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: ARDC - Recipe Management -->
+        <section class="slide slide-finding" data-slide="3">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Production Planning — Recipe Management</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Bills of Material list <strong>'Milk' as a flat ingredient</strong> with fixed quantity instead of decomposing into fat grams, protein grams, and lactose — making true product costing and component consumption impossible in SAP. Frequent shop-floor recipe changes to 'keep the show running' are <strong>never reflected in SAP BOMs</strong>; cost impact is discovered only at month-end variance analysis. Co-products from separation (cream and skim milk) are not configured for value allocation, so cream produced during yogurt-making is neither tracked nor valued.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design red">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Critical Gap</div>
+                        <div class="rating-desc">Architectural misalignment identified</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: ARDC - MRP & Milk Balancing -->
+        <section class="slide slide-finding" data-slide="4">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Production Planning — MRP & Milk Balancing</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">The core of dairy manufacturing — <strong>daily fat balance tracking, cream separation calculations, and component allocation</strong> across products — happens entirely outside SAP in Excel, with one dedicated person spending entire days on it. Raw milk composition variability (fat 3.0–4.5%, protein 2.8–3.6%) is known to the lab but <strong>never captured in SAP</strong>; the system assumes 'standard milk' when every tanker is different. Post-separation inventory (cream kg, skim kg) exists only in operator notebooks while SAP still shows 'Raw Milk.'</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design red">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Critical Gap</div>
+                        <div class="rating-desc">Architectural misalignment identified</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: ARDC - Scheduling & Capacity -->
+        <section class="slide slide-finding" data-slide="5">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Production Planning — Scheduling & Capacity</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">The production manager manually converts planned orders to production orders one-by-one — <strong>'select start, select start, select start'</strong> — spending half the day on scheduling instead of managing production. Capacity planning is explicitly <strong>'not there'</strong>; MRP generates planned orders assuming infinite capacity while real constraints (pasteurizer throughput, filling line speeds, CIP cycles) exist only as tribal knowledge. 120 fresh SKUs daily, all requiring same-day production, are scheduled entirely from memory and paper.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: ARDC - Module Architecture -->
+        <section class="slide slide-finding" data-slide="6">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Production Planning — Module Architecture</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">The current SAP configuration does not support <strong>variable-yield processes, co-products, or component-based planning</strong> required in dairy manufacturing. Batch genealogy for traceability is incomplete. Critical food safety parameters (pasteurization 72°C/15s, fermentation curves) are <strong>not captured in SAP</strong> — they exist only on paper charts or PLC historians. The daily mass balance (Milk In = Products Out + Process Loss) is performed entirely in Excel rather than through integrated SAP production reconciliation.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design red">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Critical Gap</div>
+                        <div class="rating-desc">Architectural misalignment identified</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: ARDC - Milk Reception -->
+        <section class="slide slide-finding" data-slide="7">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Production Planning — Milk Reception</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Lab tests at milk reception measure fat%, protein%, SNF, acidity, and temperature — but results are <strong>recorded on paper only</strong>. SAP receives 'X liters of Raw Milk' without component data. The weighbridge operates independently with manual weight recording. Gate pass system is for visitors only — milk tankers are not systematically controlled. Documented instance of <strong>22 consecutive days</strong> (Jan 1–22) of production running without proper SAP goods receipts while warehouse was full but system showed zero stock.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: ARDC - Quality Management -->
+        <section class="slide slide-finding" data-slide="8">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Quality Management</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">SAP QM is explicitly <strong>'not active.'</strong> All quality testing — reception, in-process, finished goods — is recorded on paper and filed by date in cabinets: thousands of pages, unsearchable and unanalyzable. No LIMS exists at ARDC. Products are released to unrestricted stock and shipped <strong>before final microbiological test results</strong> (3–5 day turnaround) — 'we sleep with that risk.' Food safety regulations require farm-to-product traceability within 4 hours; current paper-based system takes hours of manual file cross-referencing with unclear capability.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design red">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Critical Gap</div>
+                        <div class="rating-desc">Architectural misalignment identified</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: ARDC - Traceability -->
+        <section class="slide slide-finding" data-slide="9">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Production Planning — Traceability</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">The full dairy traceability chain (Finished Product → Production Batch → Raw Milk Batches → Supplier/Farm → Collection Date) is <strong>broken in SAP</strong>. Supplier batch numbers are often missing at goods receipt, production orders don't link to input batches, and the digital trail simply doesn't exist. Since milk components aren't tracked separately, there is no way to trace which supplier's fat ended up in which product — <strong>'whose fat is in that butter? We don't know.'</strong> Complete traceability exists only in paper files requiring physical retrieval from multiple filing cabinets.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design red">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Critical Gap</div>
+                        <div class="rating-desc">Architectural misalignment identified</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 10: ARDC - Cost & Inventory -->
+        <section class="slide slide-finding" data-slide="10">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Production Planning — Cost & Inventory</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Production cost visibility is <strong>monthly, not daily</strong> — actual costs calculated at month-end through variance analysis completed by the 15th of the following month, leaving 45 days of blind operation. Product costs use 'average milk cost' regardless of actual fat/protein content, so premium high-fat cheese and basic skim milk show similar costs. Massive month-end variances from Excel-based component balancing are allocated back to products arbitrarily. <strong>Daily fat losses</strong> (separation efficiency, waste, measurement error) are buried in general variance, never identified or addressed.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 11: ARDC - Van Sales Operations -->
+        <section class="slide slide-finding" data-slide="11">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Sales & Distribution — Van Sales Operations</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">SAP has <strong>zero visibility</strong> of individual van inventory across 300+ routes — reconciliation happens only at DC level. Ransale back-office is the operational brain; SAP is peripheral, receiving batch uploads at end-of-day only. All pricing, promotions, credit management, returns, route management, crate tracking, and driver KPIs operate entirely outside SAP. <strong>60–70% of sales</strong> are 'pull' orders collected via phone/email/WhatsApp with no systematic recording. Van sales uses direct billing without SAP delivery notes — custom movement types replace the standard Order-Delivery-Billing flow.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 12: ARDC - E-Commerce & Channels -->
+        <section class="slide slide-finding" data-slide="12">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Sales & Distribution — E-Commerce & Channels</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Magento e-commerce orders are manually consolidated and posted to van sales as an internal customer — <strong>'in SAP or van sales, we are not creating any sales directly from Magento.'</strong> Talabat dark store stock requests may not reach SAP at all — 'SAP has no clue. It's in transit' — flagged as an <strong>auditable concern</strong>. E-commerce, B2B van sales, and retail POS are all posted without clear channel identification, making true channel profitability analysis impossible. Shelf-life enforcement (FEFO) and minimum remaining shelf-life checks for major retailers are not system-enforced.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 13: ARDC - Revenue & Profitability -->
+        <section class="slide slide-finding" data-slide="13">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Sales & Distribution — Revenue & Profitability</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Routes are not defined in SAP, so <strong>route-level profitability cannot be calculated</strong> — 'if all revenue lands in one GL account, management has zero visibility into what's actually making money.' Retail POS sales are consolidated as single transactions without individual receipts, creating potential <strong>FTA compliance risk</strong>. Stock transferred between locations may show 'in transit' while 'SAP has no clue' — flagged as 'auditable big time issue.' All operational KPIs, driver performance, and route efficiency are tracked only in the Ransale back-office.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 14: ARDC - Group & Consolidation -->
+        <section class="slide slide-finding" data-slide="14">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Finance & Controlling — Group & Consolidation</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Company codes use inconsistent numbering (ARDC '2xxx', Emirates Rawabi '1000', Greenfield '7xxx', Kizad '5000') with no standardized naming convention. <strong>Group consolidation is performed manually in Excel</strong> — trial balances aggregated, intercompany identification and elimination done by hand. SAP Group Reporting is not implemented; cannot drill down from consolidated to transaction level. Greenfield has a separate Chart of Accounts creating additional consolidation complexity. Same materials carry different codes across companies with no global material master.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization yellow">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Partial Use (30-60%)</div>
+                        <div class="rating-desc">Some processes in SAP, many workarounds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 15: ARDC - Intercompany & Tax -->
+        <section class="slide slide-finding" data-slide="15">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Finance & Controlling — Intercompany & Tax</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Intercompany transactions are processed as regular buyer-supplier transactions — <strong>not automated in SAP</strong>. No transfer pricing documentation exists between entities; Oman uses cost-to-cost basis while <strong>UAE corporate tax now requires proper documentation</strong>. IC invoices are generated manually for VAT compliance, creating additional effort and error risk. CO-PA is costing-based in ECC and will require migration to account-based standard in S/4HANA. Livestock is treated as inventory revalued at year-end, non-compliant with IAS 41 biological asset accounting.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design yellow">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Partial Implementation</div>
+                        <div class="rating-desc">Foundation exists, enhancements needed</div>
+                    </div>
+                    <div class="rating-box utilization yellow">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Partial Use (30-60%)</div>
+                        <div class="rating-desc">Some processes in SAP, many workarounds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 16: ARDC - Procurement & MRP -->
+        <section class="slide slide-finding" data-slide="16">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Materials Management — Procurement & MRP</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">MRP concept exists but is <strong>not operational</strong> — the entire process from demand forecasting to PR creation is manual using Excel. Feed requirements for farms are calculated in Excel by farm personnel based on cow count and milk production. Only initial data extraction from SAP is automated; all calculations and PR creation remain manual. The full procurement cycle (PR to PO) is manual: create PO from quotation, compare vendors manually based on <strong>buyer experience, no vendor scorecards</strong>. Rolling forecast went live only last week with process still maturing.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design yellow">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Partial Implementation</div>
+                        <div class="rating-desc">Foundation exists, enhancements needed</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 17: ARDC - Inventory & Warehouse -->
+        <section class="slide slide-finding" data-slide="17">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge ardc">Al Rawabi Dairy Company</div>
+                    <div class="module-name">Materials Management — Inventory & Warehouse</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Milk balancing uses <strong>complex Excel formulas</strong> for daily operations — tedious, time-consuming, and done at milk level rather than component level (fat/protein/SNF). No dedicated warehouse manager role exists; items stored wherever space allows with no optimized storage assignment. Dead stock and consumption issues require significant attention. Same items have <strong>duplicate material codes</strong> across vendors, hindering tracking and invoicing. Custom material types (e.g., ZROH) introduce non-standard complexity. Kizad biosecurity rule (no inbound transfers) is not fully system-enforced.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design yellow">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Partial Implementation</div>
+                        <div class="rating-desc">Foundation exists, enhancements needed</div>
+                    </div>
+                    <div class="rating-box utilization yellow">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Partial Use (30-60%)</div>
+                        <div class="rating-desc">Some processes in SAP, many workarounds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== EMIRATES NATIONAL FOODS ==================== -->
+
+        <!-- SLIDE 18: ENF - Van Sales & Channels -->
+        <section class="slide slide-finding" data-slide="18">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge enf">Emirates National Foods</div>
+                    <div class="module-name">Sales & Distribution — Van Sales & Channels</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Two distinct brands (Al Rawdah fresh/chilled, Al Salwa frozen) operate through completely different distribution channels with <strong>no coordinated brand strategy</strong> — market cannibalization risk unanalyzed. 32 van routes use SONIC handheld devices operating offline all day with no real-time stock visibility; van inventory reconciled only at end of day. Route-level profitability is invisible — all sales aggregate to a single cost center with <strong>no CO-PA analysis</strong>. 13% return rate for fresh products is significantly above industry benchmark. Returns converted to frozen Al Salwa brand with no value tracking.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 19: ENF - B2B & Export -->
+        <section class="slide slide-finding" data-slide="19">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge enf">Emirates National Foods</div>
+                    <div class="module-name">Sales & Distribution — B2B & Export</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Key accounts like Nandos require <strong>custom marinades with specific specifications</strong>, but recipe management for customer-specific products is not in SAP. Export represents only 3% of frozen sales with documentation and compliance <strong>managed manually</strong> and no integrated export planning with production. Driver performance, delivery efficiency, and operational metrics are tracked entirely outside SAP.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design yellow">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Partial Implementation</div>
+                        <div class="rating-desc">Foundation exists, enhancements needed</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 20: ENF - Hatchery Operations -->
+        <section class="slide slide-finding" data-slide="20">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge enf">Emirates National Foods</div>
+                    <div class="module-name">Hatchery Operations</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">85% of hatching eggs come from Salwa with 15% from open market imports — <strong>no formal agreements</strong> with external suppliers for quality or pricing, and import planning is not integrated with hatchery capacity. Egg grading (A-grade hatchable, B-grade rejected) is done at ENF rather than at source, making <strong>transport damage unattributable</strong>. FIFO for egg setting is not system-enforced; age-based prioritization is manual. Storage conditions and incubation parameters (temperature, humidity, turning) are not logged in SAP. Actual hatchability is 90–92% vs planning estimate of 85–86%, but variance is not analyzed by egg source or incubator.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 21: ENF - Farm Operations -->
+        <section class="slide slide-finding" data-slide="21">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge enf">Emirates National Foods</div>
+                    <div class="module-name">Farm Operations — Growing Cycle</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">13 farms with 6 houses each (150,000 birds capacity) have <strong>no system visibility</strong> of farm-level capacity and availability — some farms consistently underutilized. Placement planning is not optimized for processing plant capacity and biosecurity zones are not enforced. Feed is delivered in bulk to farm silos with <strong>NO measurement at farm level</strong> — ENF cannot verify quantities that GF claims to have delivered. FCR of 1.7–1.8 vs industry benchmark of 1.4 represents significant cost leakage, but FCR is calculated manually in Excel using potentially inaccurate data. Mortality scrap is recorded only at end of growing cycle with no daily tracking or cause-of-death analysis.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 22: ENF - Processing Plant -->
+        <section class="slide slide-finding" data-slide="22">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge enf">Emirates National Foods</div>
+                    <div class="module-name">Processing Plant — Production</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">50–60K birds slaughtered daily across two plants (PPE for fresh, FPPE for frozen) — FPPE imports 95% of raw material from Brazil with minimal local farm integration. A chain of 5 production orders (egg → DOC → broiler → carcass → finished goods) operates <strong>without integrated tracking</strong> or inter-stage variance analysis. Production orders are created <strong>AFTER output is known</strong> — reverse planning that defeats standard costing. Carcass split decisions (65–70% whole birds, 30–35% portions) are made manually, not driven by demand optimization. No catch-weight management for variable-weight products — pricing and costing use piece count, not actual weight.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 23: ENF - Quality Management -->
+        <section class="slide slide-finding" data-slide="23">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge enf">Emirates National Foods</div>
+                    <div class="module-name">Quality Management</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">All quality inspection is done on paper — <strong>SAP QM not active</strong>. HACCP control points are not integrated with production orders and temperature monitoring at critical points is not logged in system. No LIMS exists; lab results are not linked to production batches and quality trends cannot be analyzed over time. <strong>Disease outbreak traceability is impossible</strong> when birds from multiple sources are mixed — vaccination records are not linked to bird batches. Hatchery QC testing done at day 20–22 is too late for corrective action. Return quality inspections classify as 'good' (reprocess) or 'bad' (render) but return reasons are not analyzed for quality improvement.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design red">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Critical Gap</div>
+                        <div class="rating-desc">Architectural misalignment identified</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 24: ENF - Feed & Procurement -->
+        <section class="slide slide-finding" data-slide="24">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge enf">Emirates National Foods</div>
+                    <div class="module-name">Materials Management — Feed & Procurement</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">100% chicken feed from Greenfields (intercompany) with <strong>no formal SLA</strong> for delivery schedule or quality — feed cost = 95–98% of chicken production cost, making this the most critical supplier relationship. 90% of feed qualifies for ADS subsidy but tracking and documentation are manual with reconciliation done outside SAP, creating <strong>compliance risk</strong>. Bulk tanker delivery to farm silos has no measurement at the receiving end — GF delivery note is the only record with no receiving confirmation, creating potential for quantity disputes. Vaccine/medication cold chain compliance and withdrawal periods are tracked manually with lot traceability not linked to bird batches.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 25: ENF - Finance & Controlling -->
+        <section class="slide slide-finding" data-slide="25">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge enf">Emirates National Foods</div>
+                    <div class="module-name">Finance & Controlling</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Costing is done at <strong>period level rather than production order level</strong> — cannot determine true cost of a specific batch or lot, with actual costing run monthly only. No value-based splitting for co-products (whole birds vs portions) and by-product values (giblets, feet) are not systematically captured, making margin analysis by product type unreliable. All labor cost goes directly to P&L without allocation to products — <strong>cannot analyze labor cost per kg or per bird</strong>. Activity-based costing is not implemented. WIP valuation for birds in farms uses accumulated cost methodology with no IAS 41 biological asset accounting. Fixed transfer prices for eggs (Salwa) and feed (GF) lack corporate tax documentation.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GREENFIELDS FOR FEEDS ==================== -->
+
+        <!-- SLIDE 26: GF - IC & External Sales -->
+        <section class="slide slide-finding" data-slide="26">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge gf">Greenfields for Feeds</div>
+                    <div class="module-name">Sales & Distribution — Intercompany & External</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">100% of chicken feed goes to ENF (intercompany) with <strong>no external customer base</strong> — creating single-customer concentration risk. External cattle feed sales operate through a completely separate process. Custom gate pass system (non-standard SAP) auto-creates sales orders with weighbridge integration — good control point but custom-built. Direct bulk delivery to ENF farm silos has <strong>no verification of quantity received</strong>; delivery scheduling is not based on ENF farm demand. Fixed transfer price with margin to ENF does not adjust for commodity cost changes, with no formal transfer pricing policy documentation.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design yellow">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Partial Implementation</div>
+                        <div class="rating-desc">Foundation exists, enhancements needed</div>
+                    </div>
+                    <div class="rating-box utilization yellow">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Partial Use (30-60%)</div>
+                        <div class="rating-desc">Some processes in SAP, many workarounds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 27: GF - Procurement & Planning -->
+        <section class="slide slide-finding" data-slide="27">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge gf">Greenfields for Feeds</div>
+                    <div class="module-name">Materials Management — Procurement & Planning</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Corn, cottonseed, and soybean sourced globally with full commodity price exposure but <strong>no hedging strategy</strong>. MRP is not operational in SAP — all planning done in Excel with purchase requisitions created manually. Lead time for grain imports (months) is not factored into planning. Currently operating on a <strong>1-month planning horizon</strong> (target: 6 months), making it impossible to lock in commodity prices and resulting in frequent expedited purchases at premium. No demand signal from ENF for feed planning — GF plans based on historical consumption rather than ENF's actual farm plan.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 28: GF - Feed Manufacturing -->
+        <section class="slide slide-finding" data-slide="28">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge gf">Greenfields for Feeds</div>
+                    <div class="module-name">Production Planning — Feed Manufacturing</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">External software (Easy Feed) used for feed formulation rather than SAP — <strong>recipe changes are not version-controlled</strong> in SAP. Four feed types (Pre-starter, Starter, Grower, Finisher) with ENF-specific recipes, but formulation optimizes nutrition and cost without considering inventory. Mill utilization is only <strong>35–60%</strong> with no confirmed orders from ENF — production based on forecast rather than firm demand, and idle capacity cost is absorbed into feed price. 32.5T tanker delivery to ENF farms has no verification at receiving end; GF delivery note is the sole record. Excess feed at farms cannot be transferred back and is disposed as waste — unquantified and unanalyzed.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 29: GF - Quality Management -->
+        <section class="slide slide-finding" data-slide="29">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge gf">Greenfields for Feeds</div>
+                    <div class="module-name">Quality Management</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">GF feed supply to ENF was <strong>previously stopped due to quality issues</strong> and only recently resumed — quality metrics from the stoppage period are not available and no formal quality improvement plan is documented. New recipes are tested on 2–3 ENF farms before rollout but trial results are not systematically captured with no controlled trial methodology. <strong>Cannot correlate feed quality from GF with FCR outcomes</strong> at ENF farms — feed quality is blamed for poor FCR but no data exists to verify. Nutritional specifications maintained but spec changes are not communicated systematically. No shared metrics or accountability framework between GF and ENF.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 30: GF - Finance & Controlling -->
+        <section class="slide slide-finding" data-slide="30">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge gf">Greenfields for Feeds</div>
+                    <div class="module-name">Finance & Controlling</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Fixed margin pricing to ENF for chicken feed <strong>does not flex with commodity cost changes</strong> — margin impact on group profitability analysis is limited. GF is eliminated at poultry division level for group reporting with IC elimination performed manually. Standard cost approach with period-based actual costing provides no batch-level cost visibility, and commodity price changes are reflected only at month-end. No hedging for grain commodity exposure means <strong>cost volatility passes directly through to ENF chicken cost</strong>. A 0.1 FCR improvement = 0.5M AED annual savings, but the opportunity is not quantified by farm or feed type with no shared GF-ENF improvement incentive.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design yellow">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Partial Implementation</div>
+                        <div class="rating-desc">Foundation exists, enhancements needed</div>
+                    </div>
+                    <div class="rating-box utilization yellow">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Partial Use (30-60%)</div>
+                        <div class="rating-desc">Some processes in SAP, many workarounds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SALWA @ LIWA ==================== -->
+
+        <!-- SLIDE 31: Salwa - Breeder Operations -->
+        <section class="slide slide-finding" data-slide="31">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge salwa">Salwa @ Liwa</div>
+                    <div class="module-name">Production Planning — Breeder Operations</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">100% of day-old chicks imported from Saudi Arabia (30K × 3 batches/year) — <strong>single-country source creates supply risk</strong> with import timing not integrated with laying house planning. 0–24 week rearing cycle across 4 houses with performance (mortality, uniformity) tracked only in Excel; transfer to laying houses based on age rather than readiness metrics. 2 farms with 8 laying houses and 26K bird capacity produce 52,000 eggs/day at peak — but <strong>house-level production is not tracked in SAP</strong>. Production curve vs breed standard is not analyzed in system. Daily production recorded on paper first, then entered to system. Depletion timing decisions made manually.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 32: Salwa - Quality Management -->
+        <section class="slide slide-finding" data-slide="32">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge salwa">Salwa @ Liwa</div>
+                    <div class="module-name">Quality Management</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">A/B egg grading is done at ENF (destination) rather than at Salwa (source) — <strong>transport damage cannot be separately attributed</strong> and quality feedback to Salwa is delayed and incomplete. Egg quality is not tracked by house or flock age, and there is no quality incentive built into the transfer pricing mechanism. Mortality and health tracking is paper-based with medication and vaccination <strong>not batch-tracked</strong>, limiting disease outbreak traceability. Strict biosecurity protocols exist at farms but visitor and vehicle controls remain manual.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 33: Salwa - Feed & Farm Inputs -->
+        <section class="slide slide-finding" data-slide="33">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge salwa">Salwa @ Liwa</div>
+                    <div class="module-name">Materials Management — Feed & Farm Inputs</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">Feed is supplied by GF via ENF (indirect supply chain) — feed quantity and quality are <strong>not verified at receipt</strong>, with no direct relationship between Salwa and GF for specifications. GF feed routed through ENF using ADS subsidy quota creates complex documentation. Feed cost allocation to eggs is unclear. Vaccines, medications, and supplies are procured separately with <strong>no MRP for farm consumables</strong> — reorder points are manual and reactive, leading to stockouts addressed through emergency purchases. Paper-based inventory for consumables with no min-max controls in SAP. Limited egg storage at Salwa requires prompt collection, but there are no controlled storage conditions.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization red">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Not Adopted (&lt;10%)</div>
+                        <div class="rating-desc">SAP not leveraged for this process</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 34: Salwa - IC Sales & Distribution -->
+        <section class="slide slide-finding" data-slide="34">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge salwa">Salwa @ Liwa</div>
+                    <div class="module-name">Sales & Distribution — Intercompany</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">100% of sales go to ENF as single intercompany customer. ENF truck collects eggs every 4 days on a <strong>fixed schedule that is not demand-driven</strong> — collection timing is not based on egg availability, causing egg age variability that affects hatchability. Egg counting at loading is physical with no automation; count discrepancies are resolved manually and <strong>breakage during loading is not systematically tracked</strong>. Quality issues are identified only at ENF after grading with no formalized claims process and no root cause analysis feeding back to Salwa operations. Settlement timing issues persist between entities.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design yellow">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Partial Implementation</div>
+                        <div class="rating-desc">Foundation exists, enhancements needed</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 35: Salwa - Finance & Controlling -->
+        <section class="slide slide-finding" data-slide="35">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="finding-header animate-item" data-delay="0">
+                    <div class="entity-badge salwa">Salwa @ Liwa</div>
+                    <div class="module-name">Finance & Controlling</div>
+                </div>
+                <div class="finding-body animate-item" data-delay="100">
+                    <p class="finding-text">All costs accumulated at company level with <strong>no house-level costing</strong> — cannot analyze profitability by house or flock, and all houses are treated identically regardless of performance. Cost per egg is not calculated systematically, and feed cost (the largest component) allocation is unclear. Parent stock is <strong>not valued as biological asset per IAS 41</strong>; flock depreciation is calculated manually in Excel without linkage to actual bird count (mortality), and fair value changes are not recognized. Fixed transfer price per egg to ENF does not reflect cost changes and includes no quality-based pricing differential.</p>
+                </div>
+                <div class="finding-ratings animate-item" data-delay="200">
+                    <div class="rating-box design orange">
+                        <div class="rating-label">Implementation</div>
+                        <div class="rating-value">Significant Gap</div>
+                        <div class="rating-desc">Key capabilities not configured</div>
+                    </div>
+                    <div class="rating-box utilization orange">
+                        <div class="rating-label">Adoption</div>
+                        <div class="rating-value">Limited Use (10-30%)</div>
+                        <div class="rating-desc">SAP used for recording, not operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SUMMARY ==================== -->
+
+        <!-- SLIDE 36: Key Statistics -->
+        <section class="slide slide-stats slide-summary" data-slide="36">
+            <div class="slide-bg gradient-primary"></div>
+            <div class="slide-content">
+                <div class="section-label light animate-item" data-delay="0">Executive Summary</div>
+                <h1 class="slide-title light animate-item" data-delay="100">Transformation Imperative</h1>
+                <p class="slide-subtitle-light animate-item" data-delay="150">378 observations across 4 entities reveal systemic gaps requiring immediate strategic intervention</p>
+
+                <div class="summary-metrics animate-item" data-delay="200">
+                    <div class="summary-metric">
+                        <div class="metric-big">34</div>
+                        <div class="metric-label">Consolidated<br>Findings</div>
+                    </div>
+                    <div class="summary-metric">
+                        <div class="metric-big">76%</div>
+                        <div class="metric-label">Critical or<br>Significant Gaps</div>
+                    </div>
+                    <div class="summary-metric">
+                        <div class="metric-big">50%</div>
+                        <div class="metric-label">SAP Features<br>Not Adopted</div>
+                    </div>
+                </div>
+
+                <div class="entity-action-grid animate-item" data-delay="300">
+                    <div class="entity-action-card priority-critical">
+                        <div class="priority-badge">Priority 1</div>
+                        <div class="entity-name">Al Rawabi Dairy Company</div>
+                        <div class="entity-numbers">
+                            <span class="big-num">16</span> findings from <span class="big-num">117</span> observations
+                        </div>
+                        <div class="entity-status">
+                            <span class="status-tag critical">Critical Gap</span>
+                            <span class="status-tag critical">Not Adopted</span>
+                        </div>
+                        <div class="action-needed">Requires architectural redesign of production planning</div>
+                    </div>
+                    <div class="entity-action-card priority-high">
+                        <div class="priority-badge">Priority 2</div>
+                        <div class="entity-name">Emirates National Foods</div>
+                        <div class="entity-numbers">
+                            <span class="big-num">8</span> findings from <span class="big-num">121</span> observations
+                        </div>
+                        <div class="entity-status">
+                            <span class="status-tag warning">Significant Gap</span>
+                            <span class="status-tag critical">Not Adopted</span>
+                        </div>
+                        <div class="action-needed">Farm-to-fork traceability & feed measurement critical</div>
+                    </div>
+                    <div class="entity-action-card priority-medium">
+                        <div class="priority-badge">Priority 3</div>
+                        <div class="entity-name">Greenfields for Feeds</div>
+                        <div class="entity-numbers">
+                            <span class="big-num">5</span> findings from <span class="big-num">67</span> observations
+                        </div>
+                        <div class="entity-status">
+                            <span class="status-tag warning">Significant Gap</span>
+                            <span class="status-tag partial">Partial Use</span>
+                        </div>
+                        <div class="action-needed">Quality management & batch traceability integration</div>
+                    </div>
+                    <div class="entity-action-card priority-medium">
+                        <div class="priority-badge">Priority 4</div>
+                        <div class="entity-name">Salwa @ Liwa</div>
+                        <div class="entity-numbers">
+                            <span class="big-num">5</span> findings from <span class="big-num">73</span> observations
+                        </div>
+                        <div class="entity-status">
+                            <span class="status-tag warning">Significant Gap</span>
+                            <span class="status-tag critical">Not Adopted</span>
+                        </div>
+                        <div class="action-needed">House-level costing & biological asset compliance</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 37: Recommendations -->
+        <section class="slide slide-recommendations-v2" data-slide="37">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="section-label animate-item" data-delay="0">Strategic Roadmap</div>
+                <h1 class="slide-title animate-item" data-delay="100">Transformation Workstreams</h1>
+
+                <div class="roadmap-container animate-item" data-delay="150">
+                    <!-- Workstream Headers -->
+                    <div class="workstream-timeline">
+                        <div class="timeline-phase phase-1">
+                            <div class="phase-label">Foundation</div>
+                            <div class="phase-time">0-6 Months</div>
+                        </div>
+                        <div class="timeline-phase phase-2">
+                            <div class="phase-label">Optimization</div>
+                            <div class="phase-time">6-12 Months</div>
+                        </div>
+                        <div class="timeline-phase phase-3">
+                            <div class="phase-label">Transformation</div>
+                            <div class="phase-time">12-24 Months</div>
+                        </div>
+                    </div>
+
+                    <!-- Workstreams -->
+                    <div class="workstreams-grid">
+                        <div class="workstream">
+                            <div class="workstream-header">
+                                <div class="ws-icon"><i class="fas fa-industry"></i></div>
+                                <div class="ws-title">Production & Planning</div>
+                            </div>
+                            <div class="workstream-phases">
+                                <div class="ws-phase">Component-based BOM redesign</div>
+                                <div class="ws-phase">Capacity planning activation</div>
+                                <div class="ws-phase">Advanced planning & scheduling</div>
+                            </div>
+                            <div class="ws-outcome"><i class="fas fa-chart-line"></i> Yield optimization & real-time costing</div>
+                        </div>
+
+                        <div class="workstream">
+                            <div class="workstream-header">
+                                <div class="ws-icon"><i class="fas fa-shield-alt"></i></div>
+                                <div class="ws-title">Quality & Compliance</div>
+                            </div>
+                            <div class="workstream-phases">
+                                <div class="ws-phase">SAP QM activation & LIMS</div>
+                                <div class="ws-phase">Batch traceability end-to-end</div>
+                                <div class="ws-phase">Regulatory reporting automation</div>
+                            </div>
+                            <div class="ws-outcome"><i class="fas fa-check-circle"></i> 4-hour traceability & audit readiness</div>
+                        </div>
+
+                        <div class="workstream">
+                            <div class="workstream-header">
+                                <div class="ws-icon"><i class="fas fa-truck"></i></div>
+                                <div class="ws-title">Sales & Distribution</div>
+                            </div>
+                            <div class="workstream-phases">
+                                <div class="ws-phase">Real-time van sales integration</div>
+                                <div class="ws-phase">Route optimization & ATP</div>
+                                <div class="ws-phase">Omnichannel order management</div>
+                            </div>
+                            <div class="ws-outcome"><i class="fas fa-eye"></i> Live inventory & channel visibility</div>
+                        </div>
+
+                        <div class="workstream">
+                            <div class="workstream-header">
+                                <div class="ws-icon"><i class="fas fa-calculator"></i></div>
+                                <div class="ws-title">Finance & Controlling</div>
+                            </div>
+                            <div class="workstream-phases">
+                                <div class="ws-phase">Transfer pricing documentation</div>
+                                <div class="ws-phase">IC automation & group reporting</div>
+                                <div class="ws-phase">Profitability analytics by entity</div>
+                            </div>
+                            <div class="ws-outcome"><i class="fas fa-file-invoice"></i> Tax compliance & margin visibility</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="roadmap-footer animate-item" data-delay="300">
+                    <div class="footer-note">
+                        <i class="fas fa-lightbulb"></i>
+                        <span><strong>Recommended Approach:</strong> Phased implementation with quick wins in Foundation phase to build momentum and demonstrate value before major transformation initiatives.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 38: Next Steps -->
+        <section class="slide slide-cta" data-slide="38">
+            <div class="slide-bg gradient-primary">
+                <div class="cta-shapes">
+                    <div class="cta-circle c1"></div>
+                    <div class="cta-circle c2"></div>
+                    <div class="cta-circle c3"></div>
+                </div>
+            </div>
+            <div class="slide-content centered">
+                <h1 class="cta-title animate-item" data-delay="0">Next Steps</h1>
+                <p class="cta-text animate-item" data-delay="200">Transform Emirates Rawabi Group's SAP foundation</p>
+                <div class="cta-contact animate-item" data-delay="400">
+                    <div class="contact-item">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Discovery Workshop</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-road"></i>
+                        <span>Transformation Roadmap</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Business Case</span>
+                    </div>
+                </div>
+                <div class="cta-logo animate-item" data-delay="600">
+                    <img src="assets/logo.png" alt="NXSYS" class="cta-logo-img">
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 39: Appendix - All Findings -->
+        <section class="slide slide-appendix" data-slide="39">
+            <div class="slide-bg light"></div>
+            <div class="slide-content appendix-content">
+                <div class="appendix-header animate-item" data-delay="0">
+                    <div class="detail-icon"><i class="fas fa-list-alt"></i></div>
+                    <div class="detail-title-group">
+                        <span class="detail-module">Appendix</span>
+                        <h2>Complete Findings Reference</h2>
+                    </div>
+                </div>
+
+                <div class="findings-controls animate-item" data-delay="100">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="findingsSearch" placeholder="Search findings...">
+                    </div>
+                    <div class="filter-group">
+                        <select id="filterEntity">
+                            <option value="">All Entities</option>
+                            <option value="Al Rawabi Dairy Company">Al Rawabi Dairy</option>
+                            <option value="Emirates National Foods">Emirates National Foods</option>
+                            <option value="Greenfields for Feeds">Greenfields for Feeds</option>
+                            <option value="Salwa @ Liwa">Salwa @ Liwa</option>
+                        </select>
+                        <select id="filterModule">
+                            <option value="">All Modules</option>
+                            <option value="Production Planning">Production Planning</option>
+                            <option value="Sales & Distribution">Sales & Distribution</option>
+                            <option value="Finance & Controlling">Finance & Controlling</option>
+                            <option value="Materials Management">Materials Management</option>
+                            <option value="Quality Management">Quality Management</option>
+                            <option value="Hatchery Operations">Hatchery Operations</option>
+                            <option value="Farm Operations">Farm Operations</option>
+                            <option value="Processing Plant">Processing Plant</option>
+                        </select>
+                        <select id="filterCriticality">
+                            <option value="">All Criticality</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div class="results-count">
+                        <span id="resultsCount">378</span> findings
+                    </div>
+                </div>
+
+                <div class="findings-table-wrapper animate-item" data-delay="200">
+                    <table class="findings-table" id="findingsTable">
+                        <thead>
+                            <tr>
+                                <th class="col-id">#</th>
+                                <th class="col-entity">Entity</th>
+                                <th class="col-module">Module</th>
+                                <th class="col-process">Process</th>
+                                <th class="col-observation">Observation</th>
+                                <th class="col-criticality">Criticality</th>
+                            </tr>
+                        </thead>
+                        <tbody id="findingsBody">
+                            <!-- Findings will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="findings-data.js"></script>
+    <script src="finding-details.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>

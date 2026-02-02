@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Flow Diagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 50%, #0d1f35 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .title {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .title span {
+            background: linear-gradient(90deg, #00d4ff, #0099cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .flow-box {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
+            padding: 40px 50px;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s ease;
+            min-width: 180px;
+        }
+
+        .flow-box:hover {
+            transform: translateY(-10px);
+            border-color: #00d4ff;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.3);
+        }
+
+        .flow-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00d4ff, transparent, #00d4ff);
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .flow-box:hover::before {
+            opacity: 0.5;
+        }
+
+        .flow-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #0a1628;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .flow-title {
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            line-height: 1.3;
+        }
+
+        .flow-arrow {
+            color: #00d4ff;
+            font-size: 2.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+                transform: translateX(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(5px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .flow-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+                animation: pulseDown 1.5s ease-in-out infinite;
+            }
+
+            @keyframes pulseDown {
+                0%, 100% {
+                    opacity: 0.5;
+                    transform: rotate(90deg) translateX(0);
+                }
+                50% {
+                    opacity: 1;
+                    transform: rotate(90deg) translateX(5px);
+                }
+            }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-size: 1rem;
+            margin-top: 50px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Entity <span>Structure</span></h1>
+
+        <div class="flow-container">
+            <div class="flow-box">
+                <div class="flow-number">1</div>
+                <div class="flow-title">Al Rawabi</div>
+            </div>
+
+            <div class="flow-arrow">&#10132;</div>
+
+            <div class="flow-box">
+                <div class="flow-number">2</div>
+                <div class="flow-title">Salwa</div>
+            </div>
+
+            <div class="flow-arrow">&#10132;</div>
+
+            <div class="flow-box">
+                <div class="flow-number">3</div>
+                <div class="flow-title">Emirates National Foods</div>
+            </div>
+
+            <div class="flow-arrow">&#10132;</div>
+
+            <div class="flow-box">
+                <div class="flow-number">4</div>
+                <div class="flow-title">Greenfields</div>
+            </div>
+        </div>
+
+        <p class="subtitle">Emirates Rawabi Group | SAP Pre-Discovery</p>
+    </div>
+</body>
+</html>
