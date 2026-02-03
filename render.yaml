@@ -1,0 +1,6 @@
+services:
+  - type: web
+    env: static
+    name: emirates-rawabi-presentation
+    staticPublishPath: ./
+    buildCommand: ""
