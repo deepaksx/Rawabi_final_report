@@ -13,7 +13,7 @@ const fs = require('fs');
 const path = require('path');
 
 const CONFIG = {
-    totalSlides: 39,
+    totalSlides: 40,
     viewportWidth: 1920,
     viewportHeight: 1080,
     outputFile: 'Emirates-Rawabi-SAP-Pre-Discovery.pdf',
