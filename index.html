@@ -7,10 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <!-- Export Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/PptxGenJS@3.12.0/dist/pptxgen.bundle.js"></script>
 </head>
 <body>
     <!-- Preloader -->
@@ -31,31 +27,6 @@
         <span class="divider">/</span>
         <span class="total">39</span>
     </div>
-
-    <!-- Download Buttons -->
-    <div class="download-buttons" id="downloadButtons">
-        <button class="download-btn" id="downloadPDF" title="Download PDF (Use npm run export-pdf for best quality)">
-            <i class="fas fa-file-pdf"></i>
-            <span>PDF</span>
-        </button>
-        <button class="download-btn" id="downloadPPT" title="Download PowerPoint">
-            <i class="fas fa-file-powerpoint"></i>
-            <span>PPT</span>
-        </button>
-    </div>
-
-    <!-- Export Progress Modal -->
-    <div class="export-modal" id="exportModal">
-        <div class="export-modal-content">
-            <div class="export-spinner"></div>
-            <div class="export-title">Generating Export</div>
-            <div class="export-progress-text" id="exportProgressText">Preparing slides...</div>
-            <div class="export-progress-bar">
-                <div class="export-progress-fill" id="exportProgressFill"></div>
-            </div>
-        </div>
-    </div>
-
     <!-- Navigation Arrows -->
     <div class="nav-arrows">
         <button class="nav-arrow prev" id="prevSlide" aria-label="Previous slide">
