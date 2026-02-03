@@ -114,7 +114,7 @@ const findingDetails = {
         ]
     },
     6: {
-        title: "Module Architecture",
+        title: "Production Planning",
         entity: "Al Rawabi Dairy Company",
         coreArgument: `
             <p>The current SAP configuration cannot support <strong>variable-yield processes, co-products, or batch genealogy</strong> — fundamental requirements in dairy manufacturing. This is not a usage problem; it's a configuration problem.</p>

@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: emirates-rawabi-presentation
+    runtime: static
+    buildCommand: echo "No build required"
+    staticPublishPath: .
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=3600

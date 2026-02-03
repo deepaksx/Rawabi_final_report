@@ -13,10 +13,10 @@ const fs = require('fs');
 const path = require('path');
 
 const CONFIG = {
-    totalSlides: 20,
+    totalSlides: 39,
     viewportWidth: 1920,
     viewportHeight: 1080,
-    outputFile: 'emirates-rawabi-pre-discovery-report.pdf',
+    outputFile: 'Emirates-Rawabi-SAP-Pre-Discovery.pdf',
     slideTransitionWait: 400,
 };
 
@@ -93,7 +93,11 @@ async function exportToPDF() {
                 '.slide-indicators',
                 '.slide-titles-nav',
                 '.presenter-notes',
-                '.preloader'
+                '.preloader',
+                '.download-buttons',
+                '.finding-detail-panel',
+                '.panel-overlay',
+                '.export-modal'
             ];
             elementsToHide.forEach(selector => {
                 document.querySelectorAll(selector).forEach(el => {

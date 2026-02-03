@@ -26,6 +26,7 @@ class Presentation {
     init() {
         this.createIndicators();
         this.bindEvents();
+        this.initFindingDetailPanel();
         this.showPreloader();
         this.updateUI();
     }
@@ -163,6 +164,9 @@ class Presentation {
 
         // Animate counters on this slide
         this.animateCountersOnSlide(index);
+
+        // Update finding detail panel
+        this.updateFindingDetailPanel();
 
         // Reset animation lock
         setTimeout(() => {
@@ -467,6 +471,147 @@ class Presentation {
             notesBody.innerHTML = '<p class="no-notes">No presenter notes for this slide.</p>';
         }
     }
+
+    // ==========================================
+    // Finding Detail Panel (click to open, stays open on navigation)
+    // ==========================================
+    updateFindingDetailPanel() {
+        const panel = document.getElementById('findingDetailPanel');
+        const body = document.getElementById('findingDetailBody');
+
+        if (!panel || !body) return;
+
+        // Check if panel is currently open
+        const isPanelOpen = panel.classList.contains('active');
+
+        // Check if findingDetails exists and has data for current slide
+        if (typeof findingDetails !== 'undefined' && findingDetails[this.currentSlide]) {
+            // Update content
+            this.populateFindingPanel(findingDetails[this.currentSlide]);
+
+            // If panel was open, keep it open (content updated)
+            // If panel was closed, keep it closed (user needs to click to open)
+        } else {
+            // No details for this slide - close panel if open
+            if (isPanelOpen) {
+                this.closeFindingPanel();
+            }
+        }
+    }
+
+    populateFindingPanel(details) {
+        const body = document.getElementById('findingDetailBody');
+        if (!body) return;
+
+        // Scroll panel to top
+        body.scrollTop = 0;
+
+        // Build the panel content
+        let metricsHTML = '';
+        if (details.metrics && details.metrics.length > 0) {
+            metricsHTML = `
+                <div class="detail-metrics">
+                    ${details.metrics.map(m => `
+                        <div class="metric-item">
+                            <div class="metric-value">${m.value}</div>
+                            <div class="metric-label">${m.label}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        let evidenceHTML = '';
+        if (details.evidence && details.evidence.length > 0) {
+            evidenceHTML = `
+                <div class="detail-section">
+                    <h4><i class="fas fa-search"></i> Evidence</h4>
+                    <ul class="evidence-list">
+                        ${details.evidence.map(e => `<li><i class="fas fa-exclamation-triangle"></i>${e}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        body.innerHTML = `
+            <div class="detail-entity">${details.entity || ''}</div>
+            <h3 class="detail-title">${details.title || ''}</h3>
+
+            ${metricsHTML}
+
+            <div class="detail-section">
+                <h4><i class="fas fa-exclamation-circle"></i> Core Issue</h4>
+                ${details.coreArgument || ''}
+            </div>
+
+            ${evidenceHTML}
+
+            ${details.bestPractice ? `
+            <div class="detail-section">
+                <h4><i class="fas fa-check-circle"></i> Best Practice</h4>
+                ${details.bestPractice}
+            </div>
+            ` : ''}
+
+            ${details.consultingInsight ? `
+            <div class="detail-section">
+                <h4><i class="fas fa-chart-line"></i> Business Impact</h4>
+                ${details.consultingInsight}
+            </div>
+            ` : ''}
+        `;
+    }
+
+    openFindingPanel() {
+        const panel = document.getElementById('findingDetailPanel');
+        const overlay = document.getElementById('panelOverlay');
+
+        if (!panel) return;
+
+        // Only open if current slide has details
+        if (typeof findingDetails !== 'undefined' && findingDetails[this.currentSlide]) {
+            this.populateFindingPanel(findingDetails[this.currentSlide]);
+            panel.classList.add('active');
+            if (overlay) overlay.classList.add('active');
+            document.body.classList.add('panel-open');
+        }
+    }
+
+    closeFindingPanel() {
+        const panel = document.getElementById('findingDetailPanel');
+        const overlay = document.getElementById('panelOverlay');
+
+        if (panel) panel.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+        document.body.classList.remove('panel-open');
+    }
+
+    initFindingDetailPanel() {
+        const closeBtn = document.getElementById('closeFindingPanel');
+        const overlay = document.getElementById('panelOverlay');
+
+        // Close button
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.closeFindingPanel());
+        }
+
+        // Overlay click to close
+        if (overlay) {
+            overlay.addEventListener('click', () => this.closeFindingPanel());
+        }
+
+        // Click on finding body to open panel
+        document.querySelectorAll('.slide-finding .finding-body').forEach(el => {
+            el.style.cursor = 'pointer';
+            el.addEventListener('click', () => this.openFindingPanel());
+        });
+
+        // Also allow clicking on rating boxes
+        document.querySelectorAll('.slide-finding .finding-ratings').forEach(el => {
+            el.style.cursor = 'pointer';
+            el.addEventListener('click', () => this.openFindingPanel());
+        });
+    }
 }
 
 // ==========================================
@@ -601,4 +746,323 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial render
     renderFindings(findingsData);
+});
+
+// ==========================================
+// PDF & PPT Export Functionality
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const downloadPDFBtn = document.getElementById('downloadPDF');
+    const downloadPPTBtn = document.getElementById('downloadPPT');
+    const exportModal = document.getElementById('exportModal');
+    const exportProgressText = document.getElementById('exportProgressText');
+    const exportProgressFill = document.getElementById('exportProgressFill');
+
+    if (!downloadPDFBtn || !downloadPPTBtn) return;
+
+    // PDF Export
+    downloadPDFBtn.addEventListener('click', async () => {
+        await exportToPDF();
+    });
+
+    // PPT Export
+    downloadPPTBtn.addEventListener('click', async () => {
+        await exportToPPT();
+    });
+
+    function showExportModal() {
+        exportModal.classList.add('active');
+        exportProgressFill.style.width = '0%';
+    }
+
+    function hideExportModal() {
+        exportModal.classList.remove('active');
+    }
+
+    function updateProgress(percent, text) {
+        exportProgressFill.style.width = `${percent}%`;
+        exportProgressText.textContent = text;
+    }
+
+    async function exportToPDF() {
+        const { jsPDF } = window.jspdf;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const presentation = document.getElementById('presentation');
+
+        showExportModal();
+        updateProgress(0, 'Initializing PDF export...');
+
+        // Store current slide
+        const currentSlide = window.presentation ? window.presentation.currentSlide : 0;
+
+        // Hide UI elements
+        const elementsToHide = [
+            '.slide-titles-nav', '.nav-arrows', '.slide-counter',
+            '.download-buttons', '.progress-bar', '.finding-detail-panel',
+            '.panel-overlay', '.presenter-notes-panel', '.preloader'
+        ];
+
+        const hiddenElements = [];
+        elementsToHide.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => {
+                hiddenElements.push({ el, display: el.style.display, visibility: el.style.visibility });
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+            });
+        });
+
+        // Adjust presentation for full-width capture
+        const origPresentationStyle = presentation.style.cssText;
+        presentation.style.cssText = 'margin-left: 0 !important; width: 100vw !important; left: 0 !important;';
+
+        // Create PDF (landscape 16:9 ratio)
+        const pdf = new jsPDF({
+            orientation: 'landscape',
+            unit: 'px',
+            format: [1920, 1080]
+        });
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // Store original slide styles
+        const originalStyles = [];
+        slides.forEach(slide => {
+            originalStyles.push(slide.style.cssText);
+        });
+
+        try {
+            for (let i = 0; i < totalSlides; i++) {
+                updateProgress(Math.round((i / totalSlides) * 90), `Capturing slide ${i + 1} of ${totalSlides}...`);
+
+                // Hide ALL slides first with important overrides
+                slides.forEach((slide) => {
+                    slide.style.cssText = 'opacity: 0 !important; visibility: hidden !important; transform: none !important; position: absolute !important;';
+                    slide.classList.remove('active', 'prev', 'next');
+                });
+
+                // Force the current slide to be fully visible - override all CSS
+                const activeSlide = slides[i];
+                activeSlide.style.cssText = `
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    transform: none !important;
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    right: 0 !important;
+                    bottom: 0 !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                    z-index: 9999 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                `;
+                activeSlide.classList.add('active');
+
+                // Wait for render
+                await new Promise(r => setTimeout(r, 400));
+
+                // Capture the slide with specific options
+                const canvas = await html2canvas(activeSlide, {
+                    scale: 1,
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    backgroundColor: '#1a1a2e',
+                    width: 1920,
+                    height: 1080,
+                    windowWidth: 1920,
+                    windowHeight: 1080,
+                    onclone: (clonedDoc) => {
+                        // Remove Font Awesome icons that cause CORS issues
+                        const icons = clonedDoc.querySelectorAll('i.fas, i.fab, i.far, i.fa');
+                        icons.forEach(icon => {
+                            icon.style.fontFamily = 'Arial, sans-serif';
+                        });
+                    }
+                });
+
+                // Add to PDF
+                if (i > 0) pdf.addPage([1920, 1080], 'landscape');
+
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            }
+
+            updateProgress(95, 'Finalizing PDF...');
+            await new Promise(r => setTimeout(r, 200));
+
+            pdf.save('Emirates-Rawabi-SAP-Pre-Discovery.pdf');
+            updateProgress(100, 'Download complete!');
+
+        } catch (error) {
+            console.error('PDF export error:', error);
+            updateProgress(0, 'Export failed: ' + error.message);
+            await new Promise(r => setTimeout(r, 2000));
+        }
+
+        // Restore everything
+        presentation.style.cssText = origPresentationStyle;
+
+        slides.forEach((slide, idx) => {
+            slide.style.cssText = originalStyles[idx];
+            slide.classList.remove('active', 'prev', 'next');
+        });
+
+        hiddenElements.forEach(({ el, display, visibility }) => {
+            el.style.display = display || '';
+            el.style.visibility = visibility || '';
+        });
+
+        // Restore current slide
+        if (window.presentation) {
+            setTimeout(() => window.presentation.goToSlide(currentSlide), 100);
+        }
+
+        setTimeout(hideExportModal, 1500);
+    }
+
+    async function exportToPPT() {
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const presentation = document.getElementById('presentation');
+
+        showExportModal();
+        updateProgress(0, 'Initializing PowerPoint export...');
+
+        // Store current slide
+        const currentSlide = window.presentation ? window.presentation.currentSlide : 0;
+
+        // Hide UI elements
+        const elementsToHide = [
+            '.slide-titles-nav', '.nav-arrows', '.slide-counter',
+            '.download-buttons', '.progress-bar', '.finding-detail-panel',
+            '.panel-overlay', '.presenter-notes-panel', '.preloader'
+        ];
+
+        const hiddenElements = [];
+        elementsToHide.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => {
+                hiddenElements.push({ el, display: el.style.display, visibility: el.style.visibility });
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+            });
+        });
+
+        // Adjust presentation for full-width capture
+        const origPresentationStyle = presentation.style.cssText;
+        presentation.style.cssText = 'margin-left: 0 !important; width: 100vw !important; left: 0 !important;';
+
+        // Create PPT
+        const pptx = new PptxGenJS();
+        pptx.layout = 'LAYOUT_16x9';
+        pptx.title = 'Emirates Rawabi SAP Pre-Discovery Report';
+        pptx.author = 'NXSYS';
+
+        // Store original slide styles
+        const originalStyles = [];
+        slides.forEach(slide => {
+            originalStyles.push(slide.style.cssText);
+        });
+
+        try {
+            for (let i = 0; i < totalSlides; i++) {
+                updateProgress(Math.round((i / totalSlides) * 90), `Capturing slide ${i + 1} of ${totalSlides}...`);
+
+                // Hide ALL slides first with important overrides
+                slides.forEach((slide) => {
+                    slide.style.cssText = 'opacity: 0 !important; visibility: hidden !important; transform: none !important; position: absolute !important;';
+                    slide.classList.remove('active', 'prev', 'next');
+                });
+
+                // Force the current slide to be fully visible - override all CSS
+                const activeSlide = slides[i];
+                activeSlide.style.cssText = `
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    transform: none !important;
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    right: 0 !important;
+                    bottom: 0 !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                    z-index: 9999 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                `;
+                activeSlide.classList.add('active');
+
+                // Wait for render
+                await new Promise(r => setTimeout(r, 400));
+
+                // Capture the slide
+                const canvas = await html2canvas(activeSlide, {
+                    scale: 1,
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    backgroundColor: '#1a1a2e',
+                    width: 1920,
+                    height: 1080,
+                    windowWidth: 1920,
+                    windowHeight: 1080,
+                    onclone: (clonedDoc) => {
+                        // Remove Font Awesome icons that cause CORS issues
+                        const icons = clonedDoc.querySelectorAll('i.fas, i.fab, i.far, i.fa');
+                        icons.forEach(icon => {
+                            icon.style.fontFamily = 'Arial, sans-serif';
+                        });
+                    }
+                });
+
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+                const pptSlide = pptx.addSlide();
+                pptSlide.addImage({
+                    data: imgData,
+                    x: 0,
+                    y: 0,
+                    w: '100%',
+                    h: '100%'
+                });
+            }
+
+            updateProgress(95, 'Finalizing PowerPoint...');
+            await new Promise(r => setTimeout(r, 200));
+
+            await pptx.writeFile({ fileName: 'Emirates-Rawabi-SAP-Pre-Discovery.pptx' });
+            updateProgress(100, 'Download complete!');
+
+        } catch (error) {
+            console.error('PPT export error:', error);
+            updateProgress(0, 'Export failed: ' + error.message);
+            await new Promise(r => setTimeout(r, 2000));
+        }
+
+        // Restore everything
+        presentation.style.cssText = origPresentationStyle;
+
+        slides.forEach((slide, idx) => {
+            slide.style.cssText = originalStyles[idx];
+            slide.classList.remove('active', 'prev', 'next');
+        });
+
+        hiddenElements.forEach(({ el, display, visibility }) => {
+            el.style.display = display || '';
+            el.style.visibility = visibility || '';
+        });
+
+        // Restore current slide
+        if (window.presentation) {
+            setTimeout(() => window.presentation.goToSlide(currentSlide), 100);
+        }
+
+        setTimeout(hideExportModal, 1500);
+    }
 });

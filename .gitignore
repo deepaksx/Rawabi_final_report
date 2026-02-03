@@ -1,0 +1,6 @@
+node_modules/
+temp-slides/
+*.pdf
+*.pptx
+.DS_Store
+Thumbs.db
