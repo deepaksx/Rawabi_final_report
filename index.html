@@ -25,7 +25,7 @@
     <div class="slide-counter" id="slideCounter">
         <span class="current">01</span>
         <span class="divider">/</span>
-        <span class="total">39</span>
+        <span class="total">41</span>
     </div>
     <!-- Navigation Arrows -->
     <div class="nav-arrows">
@@ -89,12 +89,13 @@
         <div class="nav-item" data-nav="35">Finance & Controlling</div>
 
         <div class="nav-section">Summary</div>
-        <div class="nav-item" data-nav="36">Key Statistics</div>
-        <div class="nav-item" data-nav="37">Suggested Roadmap</div>
-        <div class="nav-item" data-nav="38">Digital Maturity Roadmap</div>
+        <div class="nav-item" data-nav="36">SAC Analytics Findings</div>
+        <div class="nav-item" data-nav="37">Key Statistics</div>
+        <div class="nav-item" data-nav="38">Suggested Roadmap</div>
+        <div class="nav-item" data-nav="39">Digital Maturity Roadmap</div>
 
         <div class="nav-section">Reference</div>
-        <div class="nav-item" data-nav="39">Appendix: All Findings</div>
+        <div class="nav-item" data-nav="40">Appendix: All Findings</div>
     </div>
 
     <!-- Presenter Notes Panel -->
@@ -1099,8 +1100,130 @@
 
         <!-- ==================== SUMMARY ==================== -->
 
-        <!-- SLIDE 36: Key Statistics -->
-        <section class="slide slide-stats slide-summary" data-slide="36">
+        <!-- SLIDE 36: SAC Analytics Findings -->
+        <section class="slide slide-sac-visual" data-slide="36">
+            <div class="slide-bg light"></div>
+            <div class="slide-content">
+                <div class="section-label animate-item" data-delay="0">Executive Summary</div>
+                <h1 class="slide-title animate-item" data-delay="100">SAC Analytics Findings</h1>
+
+                <div class="sac-visual-layout">
+                    <!-- Left: Current State Diagram -->
+                    <div class="sac-current-state animate-item" data-delay="200">
+                        <div class="state-header">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>Current State: Fragmented Analytics</span>
+                        </div>
+
+                        <!-- Data Flow Diagram -->
+                        <div class="sac-flow-diagram">
+                            <!-- Source Layer -->
+                            <div class="flow-layer sources">
+                                <div class="layer-label">Data Sources</div>
+                                <div class="flow-nodes">
+                                    <div class="flow-node hana"><i class="fas fa-database"></i><span>HANA DB</span></div>
+                                    <div class="flow-node sql"><i class="fas fa-database"></i><span>BIBO SQL</span></div>
+                                    <div class="flow-node van"><i class="fas fa-truck"></i><span>Van Sales</span></div>
+                                    <div class="flow-node cost"><i class="fas fa-calculator"></i><span>Costing DB</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Connectors -->
+                            <div class="flow-connectors">
+                                <div class="connector-line"></div>
+                                <div class="connector-warning"><i class="fas fa-exclamation-triangle"></i> 4-Layer ETL</div>
+                            </div>
+
+                            <!-- Tools Layer -->
+                            <div class="flow-layer tools">
+                                <div class="layer-label">BI Tools</div>
+                                <div class="flow-nodes">
+                                    <div class="flow-node click"><i class="fas fa-chart-bar"></i><span>ClickView</span></div>
+                                    <div class="flow-node bo"><i class="fas fa-chart-pie"></i><span>BusinessObjects</span></div>
+                                    <div class="flow-node sac-limited"><i class="fas fa-cloud"></i><span>SAC</span><span class="node-tag">Budget Only</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Issue Indicators -->
+                        <div class="sac-issues">
+                            <div class="issue-badge critical"><i class="fas fa-times-circle"></i> Profitability Outside SAP</div>
+                            <div class="issue-badge critical"><i class="fas fa-times-circle"></i> 3 Van Sales Systems</div>
+                            <div class="issue-badge warning"><i class="fas fa-exclamation-circle"></i> SAC Underutilized</div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Key Metrics & Findings -->
+                    <div class="sac-metrics-panel animate-item" data-delay="300">
+
+                        <!-- Priority Summary -->
+                        <div class="priority-summary">
+                            <div class="priority-card critical">
+                                <div class="priority-count">2</div>
+                                <div class="priority-label">Critical</div>
+                            </div>
+                            <div class="priority-card high">
+                                <div class="priority-count">2</div>
+                                <div class="priority-label">High</div>
+                            </div>
+                            <div class="priority-card medium">
+                                <div class="priority-count">3</div>
+                                <div class="priority-label">Medium</div>
+                            </div>
+                        </div>
+
+                        <!-- Key Stats -->
+                        <div class="sac-key-stats">
+                            <div class="key-stat">
+                                <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-value">4-5M</div>
+                                    <div class="stat-label">Lines → 12-13M with allocations</div>
+                                </div>
+                            </div>
+                            <div class="key-stat">
+                                <div class="stat-icon"><i class="fas fa-truck"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-value">3</div>
+                                    <div class="stat-label">Different Van Sales Systems</div>
+                                </div>
+                            </div>
+                            <div class="key-stat">
+                                <div class="stat-icon"><i class="fas fa-building"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-value">3</div>
+                                    <div class="stat-label">Entities to Centralize</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Target State Preview -->
+                        <div class="target-state-preview">
+                            <div class="target-header"><i class="fas fa-bullseye"></i> Target: Unified Analytics</div>
+                            <div class="target-items">
+                                <div class="target-item"><i class="fas fa-check"></i> S/4HANA Embedded Analytics</div>
+                                <div class="target-item"><i class="fas fa-check"></i> SAC for Planning & BvA</div>
+                                <div class="target-item"><i class="fas fa-check"></i> Consolidated Reporting</div>
+                                <div class="target-item"><i class="fas fa-check"></i> Real-time Profitability</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Click for Details -->
+                <div class="slide-action animate-item" data-delay="400">
+                    <button class="detail-trigger" onclick="openFindingPanel(36)">
+                        <i class="fas fa-search-plus"></i>
+                        <span>View Detailed Analysis</span>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 37: Key Statistics -->
+        <section class="slide slide-stats slide-summary" data-slide="37">
             <div class="slide-bg gradient-primary"></div>
             <div class="slide-content">
                 <div class="section-label light animate-item" data-delay="0">Executive Summary</div>
@@ -1175,12 +1298,13 @@
             </div>
         </section>
 
-        <!-- SLIDE 37: Suggested Roadmap - Executive View -->
-        <section class="slide slide-roadmap-exec-v2" data-slide="37">
+        <!-- SLIDE 38: Suggested Roadmap - Executive View -->
+        <section class="slide slide-roadmap-exec-v2" data-slide="38">
             <div class="slide-bg grey-theme"></div>
             <div class="slide-content">
+                <div class="section-label light animate-item" data-delay="0">Executive Summary</div>
 
-                <div class="exec-header animate-item" data-delay="0">
+                <div class="exec-header animate-item" data-delay="50">
                     <h1 class="exec-title">Transformation Roadmap</h1>
                     <div class="exec-subtitle">18-Month Journey to SAP Excellence</div>
                 </div>
@@ -1288,12 +1412,13 @@
             </div>
         </section>
 
-        <!-- SLIDE 38: Digital Maturity Roadmap -->
-        <section class="slide slide-maturity" data-slide="38">
+        <!-- SLIDE 39: Digital Maturity Roadmap -->
+        <section class="slide slide-maturity" data-slide="39">
             <div class="slide-bg maturity-gradient"></div>
             <div class="slide-content">
+                <div class="section-label light animate-item" data-delay="0">Executive Summary</div>
 
-                <div class="maturity-header animate-item" data-delay="0">
+                <div class="maturity-header animate-item" data-delay="50">
                     <h1 class="maturity-title">Digital Maturity Roadmap</h1>
                     <p class="maturity-subtitle">Emirates Rawabi's Journey to Digital Excellence</p>
                 </div>
@@ -1435,8 +1560,8 @@
             </div>
         </section>
 
-        <!-- SLIDE 39: Appendix - All Findings -->
-        <section class="slide slide-appendix" data-slide="39">
+        <!-- SLIDE 40: Appendix - All Findings -->
+        <section class="slide slide-appendix" data-slide="40">
             <div class="slide-bg light"></div>
             <div class="slide-content appendix-content">
                 <div class="appendix-header animate-item" data-delay="0">

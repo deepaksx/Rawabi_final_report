@@ -645,6 +645,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Expose presentation instance for debugging
     window.presentation = presentation;
+
+    // Global function to open finding panel (for onclick handlers)
+    window.openFindingPanel = function(slideNum) {
+        if (slideNum !== undefined) {
+            presentation.currentSlide = slideNum;
+        }
+        presentation.openFindingPanel();
+    };
 });
 
 // ==========================================

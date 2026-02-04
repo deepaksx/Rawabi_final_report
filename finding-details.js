@@ -920,6 +920,41 @@ const findingDetails = {
             { value: "Excel", label: "Depreciation" },
             { value: "Unknown", label: "House Costs" }
         ]
+    },
+    36: {
+        title: "SAC Analytics Findings",
+        entity: "Emirates Rawabi Group",
+        coreArgument: `
+            <p>The current analytics landscape is <strong>highly fragmented</strong> across multiple tools (ClickView, ClickSense, BusinessObjects) with complex 4-layer ETL pipelines. Each entity has different data sources and reporting mechanisms, making consolidated group-level analytics extremely challenging.</p>
+            <p>SAP Analytics Cloud (SAC) is <strong>underutilized</strong> — used only for annual GL budgeting while operational planning, Budget vs Actual analysis, and profitability reporting are performed outside the platform.</p>
+        `,
+        evidence: [
+            "ARDC uses ClickView, ClickSense, and BusinessObjects with HANA DB, RISA, BIBO SQL, and separate Costing DB",
+            "ENF uses BusinessObjects and Sonic with HANA DB and Sonic SQL Server",
+            "Greenfields uses only BusinessObjects with HANA DB",
+            "Profitability analysis done OUTSIDE SAP due to volume constraints (4-5M lines expanding to 12-13M with allocations)",
+            "3 different Van Sales systems: RISA (ARDC), Sonic (ENF), SAP-native (Greenfields)",
+            "SAC used ONLY for annual GL budgeting — not for operational planning",
+            "Monthly Budget vs Actual done in BusinessObjects despite SAC capability",
+            "4-layer data architecture: Transaction → BIBO/SQL → ClickView modeling → Dashboard"
+        ],
+        bestPractice: `
+            <p><strong>Recommended Approach: Unified Analytics with S/4HANA and SAC</strong></p>
+            <p><strong>1. S/4HANA Embedded Analytics:</strong> Leverage built-in Fiori analytical apps for operational reports. Many current reports (material consumption, inventory aging, sales analysis) are available out-of-box in S/4, eliminating the need for external BI tools.</p>
+            <p><strong>2. SAC for Planning & Analysis:</strong> Expand SAC usage beyond GL budgeting to include operational planning, Budget vs Actual analysis, and profitability dashboards. Cloud-to-cloud integration with S/4HANA simplifies data flow.</p>
+            <p><strong>3. Consolidated Data Layer:</strong> Design cost allocation within S/4 CO module using ACDOCA. HANA's in-memory performance can handle the 12-13M line volume that forced the Costing DB workaround.</p>
+            <p><strong>4. Van Sales Integration:</strong> Harmonize or establish robust integration layer to S/4 for all van sales systems, ensuring unified sales analytics regardless of source system.</p>
+        `,
+        consultingInsight: `
+            <p><strong>Business Impact:</strong> The fragmented analytics landscape creates multiple versions of the truth, delays in reporting, and inability to perform real-time group-level analysis. The move to a centralized S/4HANA instance requires complete redesign of all reports for consolidated company codes — this is a <strong>critical path dependency</strong> for the transformation.</p>
+            <p><strong>Next Steps:</strong> Document all existing reports with screenshots, identify data sources (Scenarios A/B/C/D), and classify by user type. This documentation is required for migration planning and effort estimation.</p>
+        `,
+        metrics: [
+            { value: "4+", label: "BI Tools in Use" },
+            { value: "3", label: "Van Sales Systems" },
+            { value: "12-13M", label: "Allocation Lines" },
+            { value: "Budgeting", label: "SAC Usage Only" }
+        ]
     }
 };
 
